@@ -1,0 +1,14 @@
+{
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "1.8.1",
+      "resolved": "ghcr.io/devcontainers/features/java@sha256:8157bab2d8d71e40b2f3128c162fab763e2b11038fdd33784549290a5d386b48",
+      "integrity": "sha256:8157bab2d8d71e40b2f3128c162fab763e2b11038fdd33784549290a5d386b48"
+    },
+    "ghcr.io/postfinance/devcontainer-features/github-cli:1": {
+      "version": "1.1.0",
+      "resolved": "ghcr.io/postfinance/devcontainer-features/github-cli@sha256:97c93668f502dd7b472342dba5f85a02294eb36daca552f0c2d0134cdafcec3f",
+      "integrity": "sha256:97c93668f502dd7b472342dba5f85a02294eb36daca552f0c2d0134cdafcec3f"
+    }
+  }
+}
