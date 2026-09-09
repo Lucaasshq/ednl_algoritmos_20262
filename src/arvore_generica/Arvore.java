@@ -21,6 +21,61 @@ class No<T> {
 		return this.filhos.isEmpty();
 	}
 	
+	// calcula a altura do nó
+	public int alturaNo(){
+		int maiorAltura = -1;
+		
+		for(No<T> filho: this.filhos){
+			int alturaFilho = filho.alturaNo();
+			if(alturaFilho > maiorAltura)
+				maiorAltura = alturaFilho;
+		}
+		
+		return maiorAltura + 1;
+	}
+
+	// procura um nó que armazena 'dado'
+	public No<T> buscarNo(T dado){
+		if(this.dado.equals(dado)){ // nó contém o dado
+			return this;
+		}else { // procurar o dado nos filhos do nó atual
+			for(No<T> filho : this.filhos) {
+				No<T> no = filho.buscarNo(dado);
+				if(no != null)
+					return no;
+			}
+		}
+		return null; // dado não encontrado!
+	}
+
+	// retorna o pai do nó que armazena o 'dado'
+	public No<T> retornarPai(T dado){
+		// procura se algum filho armazena o 'dado'
+		for(No<T> filho : this.filhos){
+			if(filho.dado.equals(dado)){
+				return this;
+			}
+		}
+
+		// procura recursivamente o 'dado' nos descendentes
+		for(No<T> filho : this.filhos){
+			No<T> pai = filho.retornarPai(dado);
+			if(pai!=null)
+				return pai;
+		}
+
+		return null;
+	}
+
+	// imprime a sub-árvore
+	public void imprimirNo(String recuo){
+		System.out.println(recuo + "+- " + this.dado);
+		
+		for(No<T> filho: this.filhos){
+				filho.imprimirNo(recuo + " ");
+		}
+	}
+
 }
 
 
@@ -73,70 +128,34 @@ public class Arvore<T> {
 		if(this.arvoreVazia())
 			return -1;
 		else {
-			return this.alturaNo(this.raiz);
+			return this.raiz.alturaNo();
 		}
-	}
-	
-	private int alturaNo(No<T> no){
-		int maiorAltura = -1;
-		
-		for(No<T> filho: no.filhos){
-			int alturaFilho = alturaNo(filho);
-			if(alturaFilho > maiorAltura)
-				maiorAltura = alturaFilho;
-		}
-		
-		return maiorAltura + 1;
 	}
 
 	public No<T> buscar(T dado){
 		if(this.arvoreVazia()){
 			return null;
 		}else {
-			return buscarNo(this.raiz, dado);
+			return this.raiz.buscarNo(dado);
 		}
 	}
 
-	private No<T> buscarNo(No<T> noAtual, T dado){
-		if(noAtual.dado == dado){ // nó contém o dado
-			return noAtual;
-		}else { // procurar o dado nos filhos do nó atual
-			for(No<T> filho : noAtual.filhos) {
-				No<T> no = buscarNo(filho, dado);
-				if(no != null)
-					return no;
-			}
-		}
-		return null; // dado não encontrado!
-	}
-
-	// TODO
+	// retorna o nó pai do nó armazena o 'dado'.
 	public No<T> retornarPai(T dado){
-		//...
-		//return retornarPai(this.raiz, dado);
-		return null;
-	}
-	
-	// TODO
-	private No<T> retornarPai(No<T> noAtual, T dado){
-		// verificar se existe algum filho do "NoAtual" que é "dado".
-		//return noAtual;
-		// senão, para cada filho do noAtual ...
-		return null;
+		if(this.arvoreVazia() || this.raiz.equals(dado))
+			return null;
+		else {
+			return this.raiz.retornarPai(dado);
+		}
 	}
 
 	public void imprimir() {
-		imprimirRecursivo(this.raiz,"");
+		if(this.arvoreVazia()){
+			System.out.println("Árvore vazia!");	
+		}else {
+			this.raiz.imprimirNo("");
+		}
 		System.out.println("");
 	}
 	
-	private void imprimirRecursivo(No<T> noAtual, String recuo){
-		if(noAtual == null) return;
-		
-		System.out.println(recuo + "+- " + noAtual.dado);
-		
-		for(No<T> filho: noAtual.filhos){
-				imprimirRecursivo(filho, recuo + " ");
-		}
-	}
 }
