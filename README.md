@@ -7,5 +7,7 @@ Repositório com os algoritmos
 ```mermaid
 graph TD
 
+A((A)) --- B((B))
+A((A)) --- C((C))
 
 ```
