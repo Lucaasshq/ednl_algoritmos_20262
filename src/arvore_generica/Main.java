@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
-		Arvore<String> arvore_a = new Arvore<>();
-		Arvore<String> arvore_b = new Arvore<>();
-		Arvore<String> arvore_c = new Arvore<>();
+		ArvoreBinaria<String> arvore_a = new ArvoreBinaria<>();
+		ArvoreBinaria<String> arvore_b = new ArvoreBinaria<>();
+		ArvoreBinaria<String> arvore_c = new ArvoreBinaria<>();
 		
 		No<String> no_a = new No<>("A");
 		arvore_a.criarRaiz(no_a);

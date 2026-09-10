@@ -5,20 +5,23 @@ import java.util.List;
 
 class No<T> {
 	T dado;
-	List<No<T>> filhos;
+	No<T> esquerda;
+	No<T> direita;
+	No<T> pai;
 	
 	// construtor
 	public No(T dado){
 		this.dado = dado;
-		this.filhos = new ArrayList<>();
+		this.esquerda = new No<>();
+		this.direita = new No<>();
 	}
 	
-	// insere um filho à direita na lista
+	// TODO - insere um filho à direita na lista
 	public void inserirFilho(No<T> filho){
-		this.filhos.add(filho);
+		//this.filhos.add(filho);
 	}
 	
-	// remover o nó na sub-árvore 
+	// TODO - remover o nó na sub-árvore 
 	public void removerNo(T dado){
 		if(!this.noFolha()){
 			// procurando nos filhos imediatos
@@ -45,10 +48,12 @@ class No<T> {
 
 	// identifica se o nó é uma folha
 	public boolean noFolha() {
-		return this.filhos.isEmpty();
+		if(this.esquerda == null && this.direita == null)
+			return true;
+		return false;
 	}
 	
-	// calcula a altura do nó
+	// TODO - calcula a altura do nó
 	public int alturaNo(){
 		int maiorAltura = -1;
 		
@@ -61,7 +66,7 @@ class No<T> {
 		return maiorAltura + 1;
 	}
 
-	// procura um nó que armazena 'dado'
+	// TODO - procura um nó que armazena 'dado'
 	public No<T> buscarNo(T dado){
 		if(this.dado.equals(dado)){ // nó contém o dado
 			return this;
@@ -76,25 +81,11 @@ class No<T> {
 	}
 
 	// retorna o pai do nó que armazena o 'dado'
-	public No<T> retornarPai(T dado){
-		// procura se algum filho armazena o 'dado'
-		for(No<T> filho : this.filhos){
-			if(filho.dado.equals(dado)){
-				return this;
-			}
-		}
-
-		// procura recursivamente o 'dado' nos descendentes
-		for(No<T> filho : this.filhos){
-			No<T> pai = filho.retornarPai(dado);
-			if(pai!=null)
-				return pai;
-		}
-
-		return null;
+	public No<T> retornarPai(T dado){		
+		return this.pai;
 	}
 
-	// imprime a sub-árvore
+	// TODO - imprime a sub-árvore
 	public void imprimirNo(String recuo){
 		System.out.println(recuo + "+- " + this.dado);
 		
@@ -103,7 +94,7 @@ class No<T> {
 		}
 	}
 
-	// imprime a sub-árvore em markdown
+	// TODO - imprime a sub-árvore em markdown
 	public String imprimirNoMD(){
 		StringBuilder sb = new StringBuilder();
 
@@ -120,7 +111,6 @@ class No<T> {
 	}
 
 }
-
 
 public class ArvoreBinaria<T> {
 	No<T> raiz;
@@ -153,21 +143,13 @@ public class ArvoreBinaria<T> {
 		return this.raiz;
 	}
 	
-	// insere um filho com a chave "dadoFilho" em "pai"
-	public void inserirNo(No<T> pai, T dadoFilho){
-		if(pai != null){
-			No<T> noFilho = new No<>(dadoFilho);
-			pai.inserirFilho(noFilho);
-		}
+	// TODO - insere um filho com a chave "dadoFilho"
+	public void inserirNo(T dadoFilho){		
+			No<T> noFilho = new No<>(dadoFilho);			
 	}
 
-	public void inserirNo(No<T> pai, No<T> filho){
-		if(pai != null){
-			pai.inserirFilho(filho);
-		}
-	}
 
-	// remove o nó na árvore que mantém o 'dado'
+	// TODO - remove o nó na árvore que mantém o 'dado'
 	public void removerNo(T dado){
 		if(!this.arvoreVazia()){
 			if(this.raiz.dado.equals(dado) && this.raiz.noFolha()){
@@ -217,7 +199,7 @@ public class ArvoreBinaria<T> {
 	public void imprimirMD(String nomeArquivo){
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("## Árvore Genérica\n");
+		sb.append("## Árvore Binária\n");
 		sb.append("```mermaid\n");
 		sb.append("graph TD\n");
 
