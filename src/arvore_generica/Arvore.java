@@ -122,15 +122,15 @@ class No<T> {
 }
 
 
-public class ArvoreBinaria<T> {
+public class Arvore<T> {
 	No<T> raiz;
 	
-	public ArvoreBinaria(T dadoRaiz){
+	public Arvore(T dadoRaiz){
 		this.raiz = new No<>(dadoRaiz);
 	}
 
 	// construtor de árvore vazia
-	public ArvoreBinaria(){
+	public Arvore(){
 		this.raiz = null;
 	}
 
