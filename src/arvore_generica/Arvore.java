@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,31 @@ class No<T> {
 		this.filhos.add(filho);
 	}
 	
+	// remover o nó na sub-árvore 
+	public void removerNo(T dado){
+		if(!this.noFolha()){
+			// procurando nos filhos imediatos
+			for(No<T> filho : this.filhos){
+				if(filho.dado.equals(dado)){
+					if(filho.noFolha()){						
+						this.filhos.remove(filho);						
+					}else {
+						No<T> ultimoNoFilho = filho.filhos.getLast();
+						filho.dado = ultimoNoFilho.dado;
+						filho.filhos.remove(ultimoNoFilho);
+					}
+					return;
+				}
+			}
+
+			// procurando nos descendentes
+			for(No<T> filho : this.filhos){
+				filho.removerNo(dado);
+			}
+		}
+	}
+
+
 	// identifica se o nó é uma folha
 	public boolean noFolha() {
 		return this.filhos.isEmpty();
@@ -76,6 +103,22 @@ class No<T> {
 		}
 	}
 
+	// imprime a sub-árvore em markdown
+	public String imprimirNoMD(){
+		StringBuilder sb = new StringBuilder();
+
+		for(No<T> filho: this.filhos){ 
+			sb.append(this.dado).append("((").append(this.dado).append("))");
+			sb.append("--- ");
+			sb.append(filho.dado).append("((").append(filho.dado).append("))\n");
+		}
+		for(No<T> filho: this.filhos){ 
+			sb.append(filho.imprimirNoMD());
+		}
+
+		return sb.toString();
+	}
+
 }
 
 
@@ -124,6 +167,17 @@ public class Arvore<T> {
 		}
 	}
 
+	// remove o nó na árvore que mantém o 'dado'
+	public void removerNo(T dado){
+		if(!this.arvoreVazia()){
+			if(this.raiz.dado.equals(dado) && this.raiz.noFolha()){
+				this.raiz = null;
+			}else {
+				this.raiz.removerNo(dado);
+			}
+		}
+	}
+
 	public int altura(){
 		if(this.arvoreVazia())
 			return -1;
@@ -149,6 +203,7 @@ public class Arvore<T> {
 		}
 	}
 
+	// imprime a árvore no "terminal"
 	public void imprimir() {
 		if(this.arvoreVazia()){
 			System.out.println("Árvore vazia!");	
@@ -156,6 +211,43 @@ public class Arvore<T> {
 			this.raiz.imprimirNo("");
 		}
 		System.out.println("");
+	}
+
+	// imprime a árvore no arquivo "nomeArquivo" no formato Markdown com Mermaid
+	public void imprimirMD(String nomeArquivo){
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("## Árvore Genérica\n");
+		sb.append("```mermaid\n");
+		sb.append("graph TD\n");
+
+		if(!this.arvoreVazia()){
+			if(this.raiz.noFolha()){
+				sb.append(this.raiz.dado + "((" + this.raiz.dado + "))\n");
+			}else {
+				sb.append(this.raiz.imprimirNoMD());
+			}
+		}
+
+		sb.append("```");
+
+		FileWriter fw = null;
+
+		try {
+			fw = new FileWriter(nomeArquivo);
+			fw.write(sb.toString());
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			if(fw != null){
+				try{
+					fw.close();
+				}catch(IOException e){
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 	
 }
